@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('parts', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->integer('serialnumber')->unique();
+            $table->unsignedBigInteger('car_id');
+            $table->foreign('car_id')->references('id')->on('cars');
             $table->timestamps();
         });
     }
