@@ -59,7 +59,7 @@ export default {
             // logic for deletion
         },
         carDetail(id: number) {
-            axios.get(`http://127.0.0.1:8000/detail/car${id}`)
+            axios.get('http://127.0.0.1:8000/detail/car' + id})
         }
     }
 }
