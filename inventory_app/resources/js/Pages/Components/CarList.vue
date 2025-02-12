@@ -10,11 +10,11 @@
                     <th>Name</th>
                     <th>Registration Number</th>
                     <th>Parts</th>
-                    <th>Delete</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="car in cars" :key="car.id" @click="carDetail(car.id)" class="clickable-row">
+                <tr v-for="car in cars" :key="car.id">
                     <td>{{ car.id }}</td>
                     <td>{{ car.name }}</td>
                     <td>{{ car.is_registered ? car.registration_number : 'Not Registered' }}</td>
@@ -25,7 +25,11 @@
                             </li>
                         </ul>
                     </td>
-                    <td><button class='btn btn-secondary' @click="deleteCar(car.id)">Delete</button></td>
+                    <td><div>
+                        <button class='btn btn-secondary' @click="deleteCar(car.id)">Delete</button>
+                        <button class="btn btn-primary" @click="carDetail(car.id)">Edit</button>
+                    </div>
+                </td>
                 </tr>
             </tbody>
         </table>

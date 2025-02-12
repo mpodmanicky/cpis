@@ -14,12 +14,17 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="part in parts" :key="part.id" @click="partDetail(part.id)" class="clickable-row">
+                <tr v-for="part in parts" :key="part.id">
                     <td>{{ part.id }}</td>
                     <td>{{ part.name }}</td>
                     <td>{{ part.serialnumber }}</td>
                     <td>{{ part.car ? $part.car.name : 'Not assigned' }}</td>
-                    <td><button class='btn btn-secondary'>Delete</button></td>
+                    <td>
+                        <div>
+                        <button class='btn btn-secondary' @click="deletePart(part.id)">Delete</button>
+                        <button class="btn btn-primary" @click="partDetail(part.id)">Edit</button>
+                    </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -49,8 +54,11 @@ export default {
                     console.error('Something wen t wrong while fetching....');
                 });
         },
-        partDetail(id:number) {
+        partDetail(id: number) {
             axios.get('http://127.0.0.1:8000/detail/part/' + id)
+        },
+        deletePart(id: number) {
+            
         }
     }
 }
