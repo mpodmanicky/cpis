@@ -14,11 +14,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="part in parts" :key="part.id">
+                <tr v-for="part in parts" :key="part.id" @click="partDetail(part.id)" class="clickable-row">
                     <td>{{ part.id }}</td>
                     <td>{{ part.name }}</td>
                     <td>{{ part.serialnumber }}</td>
-                    <td>{{ part.car.name }}</td>
+                    <td>{{ part.car ? $part.car.name : 'Not assigned' }}</td>
                     <td><button class='btn btn-secondary'>Delete</button></td>
                 </tr>
             </tbody>
@@ -39,14 +39,19 @@ export default {
     },
     methods: {
         fetchParts() {
-            axios.get('/api/parts')
+            axios.get('http://127.0.0.1:8000/api/parts')
                 .then(response => {
-                    this.parts = response.data
+                    if (response.data) {
+                        this.parts = response.data.data
+                    }
                 })
                 .catch(err => {
                     console.error('Something wen t wrong while fetching....');
                 });
         },
+        partDetail(id:number) {
+            axios.get(`http://127.0.0.1:8000/detail/part${id}`)
+        }
     }
 }
 </script>

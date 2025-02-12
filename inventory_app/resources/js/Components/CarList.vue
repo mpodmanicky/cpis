@@ -14,7 +14,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="car in cars" :key="car.id">
+                <tr v-for="car in cars" :key="car.id" @click="carDetail(car.id)" class="clickable-row">
                     <td>{{ car.id }}</td>
                     <td>{{ car.name }}</td>
                     <td>{{ car.registration_number ? car.registration_number : 'Not Registered' }}</td>
@@ -57,6 +57,9 @@ export default {
         },
         deleteCar() {
             // logic for deletion
+        },
+        carDetail(id: number) {
+            axios.get(`http://127.0.0.1:8000/detail/car${id}`)
         }
     }
 }
