@@ -20,14 +20,15 @@
                     <td>{{ car.is_registered ? car.registration_number : 'Not Registered' }}</td>
                     <td>
                         <ul>
-                            <li v-for="part in car.parts" :key="part.id">
+                            <li v-for="part in parts.filter(p => p.car_id === car.id)" :key="part.id">
                                 {{ part.name }}
                             </li>
                         </ul>
                     </td>
-                    <td><div>
-                        <button class='btn btn-secondary' @click="deleteCar(car.id)">Delete</button>
-                        <button class="btn btn-primary" @click="carDetail(car.id)">Edit</button>
+                    <td>
+                    <div class="btn-group">
+                        <button type="button" class='btn btn-secondary' @click="deleteCar(car.id)">Delete</button>
+                        <button type="button" class="btn btn-primary" @click="carDetail(car.id)">Edit</button>
                     </div>
                 </td>
                 </tr>
@@ -38,16 +39,17 @@
 
 <script lang="ts">
 import axios from 'axios';
-import { Inertia } from '@inertiajs/inertia';
 
 export default {
     data() {
         return {
-            cars: []
+            cars: [],
+            parts: []
         };
     },
     created() {
         this.fetchCars();
+        this.fetchParts();
     },
     methods: {
         fetchCars() {
@@ -59,6 +61,17 @@ export default {
                 })
                 .catch(err => {
                     console.error('Something went wrong while fetching....');
+                });
+        },
+        fetchParts() {
+            axios.get('http://127.0.0.1:8000/api/assignedParts')
+                .then(response => {
+                    if (response.data) {
+                        this.parts = response.data.data
+                    }
+                })
+                .catch(err => {
+                    console.error('Something wen t wrong while fetching....');
                 });
         },
         deleteCar(id: number) {

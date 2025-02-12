@@ -18,7 +18,7 @@
                     <td>{{ part.id }}</td>
                     <td>{{ part.name }}</td>
                     <td>{{ part.serialnumber }}</td>
-                    <td>{{ part.car ? $part.car.name : 'Not assigned' }}</td>
+                    <td>{{ part.car_id ? getCarName(part.car_id) : 'Not assigned' }}</td>
                     <td>
                         <div>
                         <button class='btn btn-secondary' @click="deletePart(part.id)">Delete</button>
@@ -36,11 +36,13 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            parts: []
+            parts: [],
+            cars: []
         };
     },
     created() {
         this.fetchParts();
+        this.fetchCars();
     },
     methods: {
         fetchParts() {
@@ -54,12 +56,33 @@ export default {
                     console.error('Something wen t wrong while fetching....');
                 });
         },
+        fetchCars() {
+            axios.get('http://127.0.0.1:8000/api/cars')
+                .then(response => {
+                    if (response.data) {
+                        this.cars = response.data.data
+                    }
+                })
+                .catch(err => {
+                    console.error('error while fetching...' + err)
+                });
+        },
+        getCarName(car_id: number) {
+            const car = this.cars.find(c => c.id === car_id);
+            return car ? car.name : 'Not assigned';
+        },
         partDetail(id: number) {
             axios.get('http://127.0.0.1:8000/detail/part/' + id)
         },
         deletePart(id: number) {
-            
-        }
+            axios.delete('http://127.0.0.1:8000/api/parts/' + id)
+                .then(response => {
+                    this.fetchParts()
+                })
+                .catch(err => {
+                    console.error('Something went wrong when deleting', err);
+                });
+        },
     }
 }
 </script>

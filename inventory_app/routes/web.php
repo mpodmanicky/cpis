@@ -14,12 +14,18 @@ Route::get('/', function () {
 Route::prefix('api')->group(function() {
     Route::get('/cars', [CarController::class, 'getCars']);
     Route::get('/parts', [PartController::class, 'getParts']);
+    Route::get('/unassignedParts', [PartController::class, 'getUnassignedParts']);
+    Route::get('/assignedParts', [PartController::class, 'getAssignedParts']);
     Route::delete('/cars/{id}', [CarController::class, 'deleteCar']);
+    Route::delete('/parts/{id}', [PartController::class, 'deletePart']);
 });
 
 Route::prefix('detail')->group(function() {
     Route::get('/car/{id}', [CarController::class, 'carDetail']);
     Route::patch('/car/{id}', [CarController::class, 'registerCar']);
+    Route::patch('/assignPart', [PartController::class, 'assignPart']);
+    Route::get('/assignedParts/{id}', [PartController::class, 'assignedPart']);
+    Route::patch('/removePart/{id}', [PartController::class, 'removePart']);
 });
 
 require __DIR__.'/auth.php';

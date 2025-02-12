@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Car;
+use App\Models\Part;
 use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
 
@@ -11,7 +12,7 @@ class CarController extends Controller
 {
     // api controller
     public function getCars() {
-        $cars = Car::all();
+        $cars = Car::orderBy('name', 'asc')->get();
 
         if($cars->isEmpty()) {
             return response()->json([
@@ -55,6 +56,7 @@ class CarController extends Controller
         $car = Car::find($id);
 
         if($car) {
+            Part::where('car_id', $id)->update(['car_id' => null]);
             $car->delete();
             
             return response()->json([
