@@ -16,12 +16,13 @@ class CarSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
+        $isRegistered = rand(0,1);
 
         for ($i = 0; $i < 10; $i++) {
             DB::table('cars')->insert([
                 'name' => $faker->company,
-                'registration_number' => rand(10000,999999),
-                'is_registered' => rand(0,1),
+                'registration_number' => $isRegistered ? rand(10000,999999) : null,
+                'is_registered' => $isRegistered,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

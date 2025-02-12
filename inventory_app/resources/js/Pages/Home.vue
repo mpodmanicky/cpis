@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import CarList from '@/Components/CarList.vue';
-import PartList from '@/Components/PartList.vue';
+import CarList from './Components/CarList.vue';
+import PartList from './Components/PartList.vue';
 import { ref } from 'vue';
 
 const showCars = ref(true);

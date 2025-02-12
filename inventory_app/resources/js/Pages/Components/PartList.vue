@@ -50,7 +50,7 @@ export default {
                 });
         },
         partDetail(id:number) {
-            axios.get('http://127.0.0.1:8000/detail/part' + id)
+            axios.get('http://127.0.0.1:8000/detail/part/' + id)
         }
     }
 }

@@ -14,6 +14,12 @@ Route::get('/', function () {
 Route::prefix('api')->group(function() {
     Route::get('/cars', [CarController::class, 'getCars']);
     Route::get('/parts', [PartController::class, 'getParts']);
+    Route::delete('/cars/{id}', [CarController::class, 'deleteCar']);
+});
+
+Route::prefix('detail')->group(function() {
+    Route::get('/car/{id}', [CarController::class, 'carDetail']);
+    Route::patch('/car/{id}', [CarController::class, 'registerCar']);
 });
 
 require __DIR__.'/auth.php';
