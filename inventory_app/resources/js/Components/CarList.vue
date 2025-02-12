@@ -9,6 +9,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Registration Number</th>
+                    <th>Parts</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -44,9 +45,11 @@ export default {
     },
     methods: {
         fetchCars() {
-            axios.get('/api/cars')
+            axios.get('http://127.0.0.1:8000/api/cars')
                 .then(response => {
-                    this.cars = response.data
+                    if (response.data) {
+                        this.cars = response.data.data
+                    }
                 })
                 .catch(err => {
                     console.error('Something went wrong while fetching....');
