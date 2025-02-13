@@ -137,4 +137,22 @@ class PartController extends Controller
             return Inertia::render('Components/Part', ['part' => $part]);
         }
     }
+
+    public function updatePart(Request $request, $id) {
+        $part = Part::find($id);
+
+        if($part) {
+            $part->name = $request['name'];
+            $part->serialnumber = $request['serialnumber'];
+            $part->save();
+
+            return response()->json([
+                'message' => 'part update successful...'
+            ], 200);
+        } else {
+            return response()->json([
+                'error' => 'part not found...'
+            ], 404);
+        }
+    }
 }

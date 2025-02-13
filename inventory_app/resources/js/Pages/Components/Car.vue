@@ -112,6 +112,7 @@ export default {
                         this.car.registration_number = this.registrationNumber;
                         this.car.is_registered = false;
                         this.car.name = this.carName;
+                        this.editing = false;
                     })
                     .catch(error => {
                         console.error('Error while registering');
@@ -129,6 +130,7 @@ export default {
                         this.car.registration_number = this.registrationNumber;
                         this.car.is_registered = true;
                         this.car.name = this.carName;
+                        this.editing = false;
                     })
                     .catch(error => {
                         console.error('Error while registering');
