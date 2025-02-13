@@ -18,6 +18,8 @@ Route::prefix('api')->group(function() {
     Route::get('/assignedParts', [PartController::class, 'getAssignedParts']);
     Route::delete('/cars/{id}', [CarController::class, 'deleteCar']);
     Route::delete('/parts/{id}', [PartController::class, 'deletePart']);
+    Route::post('/cars', [CarController::class, 'addCar']);
+    Route::post('/parts', [PartController::class, 'addPart']);
 });
 
 Route::prefix('detail')->group(function() {

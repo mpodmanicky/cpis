@@ -68,4 +68,20 @@ class CarController extends Controller
             ], 404);
         }
     }
+
+    public function addCar(Request $request) {
+        $carName = $request['name'];
+        $isRegistered = $request['registered'];
+        $registrationNumber = $isRegistered? $request['registration_number'] : null;
+
+        $car = new Car();
+        $car->name = $carName;
+        $car->is_registered = $isRegistered;
+        $car->registration_number = $registrationNumber;
+        $car->save();
+        
+        return response()->json([
+            'message' => 'Car has been successfully added to db....'
+        ], 200);
+    }
 }

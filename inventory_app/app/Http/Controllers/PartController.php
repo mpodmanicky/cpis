@@ -116,4 +116,16 @@ class PartController extends Controller
             ], 404);
         }
     }
+
+    public function addPart(Request $request) {
+        $name = $request['name'];
+        $serialNumber = $request['serialnumber'];
+
+        $part = new Part();
+        $part->name = $name;
+        $part->serialnumber = $serialNumber;
+        $part->save();
+
+        return response()->json(['message' => 'Part added to db'], 200);
+    }
 }

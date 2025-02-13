@@ -17,8 +17,8 @@ const toggleView = (view: 'cars' | 'parts') => {
 
     <div class="container text-center">
         <div class="btn-group">
-            <button class="btn btn-primary" :class="{ active: showCars }" @click="toggleView('cars')">Cars</button>
-            <button class="btn btn-primary" :class="{ active: !showCars }" @click="toggleView('parts')">Parts</button>
+            <button class="btn btn-secondary" :class="{ active: showCars }" @click="toggleView('cars')">Cars</button>
+            <button class="btn btn-secondary" :class="{ active: !showCars }" @click="toggleView('parts')">Parts</button>
         </div>
     </div>
     <!--v-if statement pre carList a partList-->

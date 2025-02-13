@@ -1,6 +1,9 @@
 <template>
-    <div class="container text-center">
+    <div class="container text-center d-flex justify-content-around align-items-center">
         <!--Form to add new part-->
+        <input type="text" class="form-control" v-model="partName" placeholder="ex.Clutch Piston"/>
+        <input type="number" class="form-control" v-model="serialNumber" placeholder="ex.998929292"/>
+        <button type="button" class="btn btn-success" @click="addPart">Add</button>
     </div>
     <div class="container text-center">
         <table class="table">
@@ -18,10 +21,10 @@
                     <td>{{ part.id }}</td>
                     <td>{{ part.name }}</td>
                     <td>{{ part.serialnumber }}</td>
-                    <td>{{ part.car_id ? getCarName(part.car_id) : 'Not assigned' }}</td>
+                    <td>{{ part.car_id ? getCarName(part.car_id) : null }}</td>
                     <td>
-                        <div>
-                        <button class='btn btn-secondary' @click="deletePart(part.id)">Delete</button>
+                        <div class="btn-group">
+                        <button class='btn btn-danger' @click="deletePart(part.id)">Delete</button>
                         <button class="btn btn-primary" @click="partDetail(part.id)">Edit</button>
                     </div>
                     </td>
@@ -37,7 +40,9 @@ export default {
     data() {
         return {
             parts: [],
-            cars: []
+            cars: [],
+            partName: '',
+            serialNumber: ''
         };
     },
     created() {
@@ -83,6 +88,26 @@ export default {
                     console.error('Something went wrong when deleting', err);
                 });
         },
+        addPart() {
+            console.log('button clicked.')
+            if (this.partName !== '' && this.serialNumber !== '') {
+                axios.post('http://127.0.0.1:8000/api/parts', {
+                    name: this.partName,
+                    serialnumber: this.serialNumber
+                })
+                    .then(response => {
+                        alert('Part added succecssfully.')
+                        this.fetchCars()
+                        this.fetchParts()
+                    })
+                    .catch(err => {
+                        alert('Oops...');
+                        console.error('Something went wrong...' + err);
+                    })
+            } else {
+                alert('Please provide required information about the part.')
+            }
+        }
     }
 }
 </script>
