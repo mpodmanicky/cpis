@@ -40,6 +40,7 @@ class CarController extends Controller
         if($car) {
             $car->registration_number = $request['registration_number'];
             $car->is_registered = $request['is_registered'];
+            $car->name = $request['name'];
             $car->save();
 
             return response()->json([

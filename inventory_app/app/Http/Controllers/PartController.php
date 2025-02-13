@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Part;
+use Inertia\Inertia;
 
 class PartController extends Controller
 {
@@ -127,5 +128,13 @@ class PartController extends Controller
         $part->save();
 
         return response()->json(['message' => 'Part added to db'], 200);
+    }
+
+    public function partDetail($id) {
+        $part = Part::find($id);
+
+        if($part) {
+            return Inertia::render('Components/Part', ['part' => $part]);
+        }
     }
 }

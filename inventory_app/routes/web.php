@@ -28,6 +28,7 @@ Route::prefix('detail')->group(function() {
     Route::patch('/assignPart', [PartController::class, 'assignPart']);
     Route::get('/assignedParts/{id}', [PartController::class, 'assignedPart']);
     Route::patch('/removePart/{id}', [PartController::class, 'removePart']);
+    Route::get('/part/{id}', [PartController::class, 'partDetail']);
 });
 
 require __DIR__.'/auth.php';

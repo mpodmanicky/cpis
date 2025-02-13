@@ -78,6 +78,14 @@ export default {
         },
         partDetail(id: number) {
             axios.get('http://127.0.0.1:8000/detail/part/' + id)
+                .then(response => {
+                    if (response.status === 200) {
+                    window.location.href = `/detail/part/${id}`
+                    }
+                })
+                .catch(err => {
+                    console.error('Error while retrieving details...', err);
+            })
         },
         deletePart(id: number) {
             axios.delete('http://127.0.0.1:8000/api/parts/' + id)

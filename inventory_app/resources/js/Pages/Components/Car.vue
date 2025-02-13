@@ -1,26 +1,30 @@
 <template>
-    <div class="container text-center mx-auto">
+    <div class="d-flex justify-content-center align-items-center vh-100">
         <!--Car detail + functionality to add new parts to the car/remove them-->
-        <div class="card">
+        <div class="card" style="width: 18rem;">
             <div v-if="car">
                 <div class="card-body">
-                    <h5 class="card-title">{{ car.name }}</h5>
-                    <h6 class="card-subtitle mb2 text-body-secondary">{{ car.registration_number }}</h6>
+                    <h5 class="card-title">Car's detail</h5>
+                    <label for="name">Cars' name</label>
+                    <input type="text" :disabled="!editing" class="form-control" name="name" v-model="carName" />
+                    <label for="registrationNumber">Registration number</label>
+                    <input type="number" :disabled="!editing" class="form-control" v-model="registrationNumber"
+                        name="registrationNumber" />
                     <p class="card-text">{{ car.is_registered ? 'Registered' : 'Not Registered' }}</p>
-                    <h6 class="card-subtitle mb2 text-body-primary">Assigned Parts</h6>
-                    <p v-for="part in carParts" class="card-text" :key="part.id">
-                        {{ part.name }}
-                        <button class="btn btn-danger" @click="removePart(part.id)">Remove</button>
-                    </p>
-                    <div v-if="!car.is_registered">
-                        <h6 class="card-subtitle text-body-secondary">Register</h6>
-                        <input type="number" placeholder="ex.9912839" v-model="registrationNumber" />
-                        <button class="btn btn-success" @click="registerCar(car.id)">Register</button>
+                    <div class="btn-group">
+                        <button class="btn btn-primary"
+                            @click="() => { if (!editing) { editing = true } else { editing = false } }">Edit</button>
+                        <button class="btn btn-primary" @click="registerCar(car.id)">Save</button>
+                    </div>
+                    <h6>Assigned Parts</h6>
+                    <div class=card>
+                        <p v-for="part in carParts" class="card-text d-flex justify-content-between" :key="part.id">
+                            {{ part.name }}
+                            <button class="btn btn-danger" @click="removePart(part.id)">Remove</button>
+                        </p>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="container text-center mx-auto" >
             <select class="form-select" v-model="selectedPart">
                 <option disabled value="">Select a part to assign</option>
                 <option v-for="part in parts" :key="part.id" :value="part.id">
@@ -34,7 +38,7 @@
 <script lang="ts">
 import axios from 'axios';
 export default {
-    
+
     props: {
         car: Object,
     },
@@ -42,8 +46,10 @@ export default {
         return {
             parts: [],
             carParts: [],
+            carName: this.car.name,
             registrationNumber: this.car.registration_number,
-            selectedPart: ''
+            selectedPart: '',
+            editing: false,
         }
     },
     created() {
@@ -62,7 +68,7 @@ export default {
                     console.error('Something wen t wrong while fetching....');
                 });
         },
-        assignPart() { 
+        assignPart() {
             if (this.selectedPart) {
                 axios.patch('http://127.0.0.1:8000/detail/assignPart', {
                     part: this.selectedPart,
@@ -82,7 +88,7 @@ export default {
                 return;
             }
         },
-        removePart(id: number) { 
+        removePart(id: number) {
             axios.patch('http://127.0.0.1:8000/detail/removePart/' + id)
                 .then(response => {
                     alert('Part has been removed successfully');
@@ -96,22 +102,39 @@ export default {
         //registerCar
         registerCar(id: number) {
             if (!this.registrationNumber) {
-                alert('Please provide registration number');
-                return;
-            }
-            axios.patch('http://127.0.0.1:8000/detail/car/' + id, {
-                registration_number: this.registrationNumber,
-                is_registered: true
-            })
-                .then(response => {
-                    alert('Car registered successfully');
-                    this.car.registration_number = this.registrationNumber;
-                    this.car.is_registered = true;
+                axios.patch('http://127.0.0.1:8000/detail/car/' + id, {
+                    registration_number: this.registrationNumber,
+                    name: this.carName,
+                    is_registered: false
                 })
-                .catch(error => {
-                    console.error('Error while registering');
-                    alert('There was an error while registering the car...');
-            })
+                    .then(response => {
+                        alert('Car registered successfully');
+                        this.car.registration_number = this.registrationNumber;
+                        this.car.is_registered = false;
+                        this.car.name = this.carName;
+                    })
+                    .catch(error => {
+                        console.error('Error while registering');
+                        alert('There was an error while registering the car...');
+                    })
+            }
+            else {
+                axios.patch('http://127.0.0.1:8000/detail/car/' + id, {
+                    registration_number: this.registrationNumber,
+                    name: this.carName,
+                    is_registered: true
+                })
+                    .then(response => {
+                        alert('Car registered successfully');
+                        this.car.registration_number = this.registrationNumber;
+                        this.car.is_registered = true;
+                        this.car.name = this.carName;
+                    })
+                    .catch(error => {
+                        console.error('Error while registering');
+                        alert('There was an error while registering the car...');
+                    })
+            }
         },
         assignedParts(id: number) {
             axios.get('http://127.0.0.1:8000/detail/assignedParts/' + id)
